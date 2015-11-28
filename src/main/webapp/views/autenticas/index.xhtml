@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/commonLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:define name="title">
+        <title>Autenticas.</title>
+    </ui:define>
+    <ui:define name="content">
+        <ui:include src="../common/Print.xhtml"/>
+
+
+        <h:form id="form"> 
+            <script>
+
+
+            </script>
+            <h1 class="title ui-widget-header ui-corner-all" align="center">GMORENOSYS S.A de C.V</h1>
+
+            <p:fieldset legend="Autenticas." style="width: 70%; margin: auto;">
+                <div align="center" style="border: 1px black solid">
+
+                    <p:panelGrid  columns="2" columnClasses="column">
+                        <p:column>
+                            <h:outputLabel for="fechaActual" value="Fecha de Emision : #{autenticasMB.fecha}"  />
+                        </p:column>
+                        <p:column>                                
+                            <h:outputLabel for="user" value="Usuario :#{currentUserSessionBean.form.sessionUser.username}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputLabel for="rpt" value="Nombre de Reporte : rpt_autenticas" />
+                        </p:column>
+                    </p:panelGrid>
+
+                    <p:growl id="msgs" showDetail="true" />
+                    <br/> <br/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:column>
+                            <p:outputLabel for="fhInicial" value="Fecha Inicial:" />
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="fhInicial"  value="#{autenticasMB.date1}"  pattern="dd-MM-yyyy"  />
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="fhFin"  value="Fecha Final:" />
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="fhFin" value="#{autenticasMB.date2}"  pattern="dd-MM-yyyy" />
+                        </p:column>
+                         <p:column>
+                            <p:outputLabel value="Notario" for="notario" />
+                        </p:column>
+                     
+                        <p:column>
+                            <p:selectOneMenu id="notario" value="#{autenticasMB.notario}" converter="#{notarioConverter}"  effect="fade"  style="width:200px" >
+                                <f:selectItem itemLabel="Seleccione Notario" noSelectionOption="true"/>
+                                <f:selectItems value="#{autenticasMB.listadoNotario}" var="notario" itemLabel="#{notario.nombre}" itemValue="#{notario}" />                                       
+                               <p:ajax update="basicDT" listener="#{autenticasMB.inicializador}" process="@this"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        
+                    </h:panelGrid>
+                    
+                    
+                    <h:panelGrid>
+
+                        <p:dataTable id="basicDT" var="autentica" value="#{autenticasMB.autenticaList}" paginator="true" rows="10">>
+                            <f:facet name="header">
+                                Autenticas
+                            </f:facet>
+                            <p:column headerText="Id Autetica">
+                                <h:outputText value="#{autentica.idautentica}" />
+                            </p:column>
+                            <p:column headerText="Notario">
+                                <h:outputText value="#{autentica.idusuario.idnotario.nombre}" />
+                            </p:column>
+                            <p:column headerText="Cliente">
+                                <h:outputText value="#{autentica.idusuario.idnotario.nombre}" />
+                            </p:column>  
+                             <p:column headerText="DUI">
+                                <h:outputText value="#{autentica.idusuario.idnotario.nombre}" />
+                            </p:column>  
+                            <p:column headerText="Fecha">
+                                <h:outputText value="#{autentica.idusuario.idnotario.nombre}" />
+                            </p:column>
+                            <p:column headerText="Costo">
+                                <h:outputText value="#{autentica.idusuario.idnotario.nombre}" />
+                            </p:column>
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton icon="ui-icon-search" title="View">
+                                    <f:setPropertyActionListener value="#{car}" target="#{autenticasMB.selectedCar}" />
+                                </p:commandButton>
+                            </p:column>
+                           
+                            
+                        </p:dataTable>
+                    </h:panelGrid>
+                    
+                    
+                    
+                    <br/> <br/>
+
+                    <h:panelGrid columns="2"  cellpadding="5">
+                        <f:facet name="footer">
+                            <div class="footer-section">
+                                <p:commandButton value="Cancelar" update="msgs"  icon="ui-icon-trash"    />
+                                <p:commandButton type="buton" value="Atras"  icon="ui-icon-check"  onclick="window.location.href = '#{facesContext.externalContext.requestContextPath}/views/index.xhtml'" />                      
+                            </div>
+                        </f:facet>
+                    </h:panelGrid>
+                </div>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:composition>

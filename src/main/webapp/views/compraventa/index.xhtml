@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition template="/WEB-INF/templates/commonLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:define name="title">
+        <title>Compraventa.</title>
+    </ui:define>
+    <ui:define name="content">
+        <ui:include src="../common/Print.xhtml"/>
+
+
+        <h:form id="form"> 
+            <script>
+
+
+            </script>
+            <h1 class="title ui-widget-header ui-corner-all" align="center">GMORENOSYS S.A de C.V</h1>
+
+            <p:fieldset legend="Compraventa Notariales." style="width: 70%; margin: auto;">
+                <div align="center" style="border: 1px black solid">
+
+                    <p:panelGrid  columns="2" columnClasses="column">
+                        <p:column>
+                            <h:outputLabel for="fechaActual" value="Fecha de Emision : #{compraVentaVehiculosMB.fecha}"  />
+                        </p:column>
+                        <p:column>                                
+                            <h:outputLabel for="user" value="Usuario :#{currentUserSessionBean.form.sessionUser.username}" />
+                        </p:column>
+                        <p:column>
+                            <h:outputLabel for="rpt" value="Nombre de Reporte : rpt_compraventa/rpt_compraventa_costo" />
+                        </p:column>
+                    </p:panelGrid>
+
+                    <p:growl id="msgs" showDetail="true" />
+                    <br/> <br/>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:column>
+                            <p:outputLabel for="fhInicial" value="Fecha Inicial:" />
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="fhInicial"  value="#{compraVentaVehiculosMB.date1}"  pattern="dd-MM-yyyy"  />
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel for="fhFin"  value="Fecha Final:" />
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="fhFin" value="#{compraVentaVehiculosMB.date2}"  pattern="dd-MM-yyyy" />
+                        </p:column>
+                         <p:column>
+                            <p:outputLabel value="Notario" for="notario" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="notario" value="#{compraVentaVehiculosMB.notario}" converter="#{notarioConverter}"  effect="fade"  style="width:200px" >
+                                <f:selectItem itemLabel="Seleccione Notario" noSelectionOption="true"/>
+                                <f:selectItems value="#{compraVentaVehiculosMB.listadoNotario}" var="notario" itemLabel="#{notario.nombre}" itemValue="#{notario}" />       
+                                <p:ajax update="clientes" listener="#{compraVentaVehiculosMB.inicializador}" process="@this"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="Clientes" for="clientes" />
+                        </p:column>
+                         <p:column>
+                            <p:selectOneMenu id="clientes" value="#{compraVentaVehiculosMB.cliente}" converter="#{clienteConverter}"  effect="fade"  style="width:200px" >
+                                <f:selectItem itemLabel="Seleccione Cliente" noSelectionOption="true"/>
+                                <f:selectItems value="#{compraVentaVehiculosMB.listadoClientes}" var="cliente" itemLabel="#{cliente.nombre}" itemValue="#{cliente}" />                                  
+                            </p:selectOneMenu>
+                        </p:column>
+                    </h:panelGrid>
+                    <br/> <br/>
+
+                    <h:panelGrid columns="2"  cellpadding="5">
+                        <f:facet name="footer">
+                            <div class="footer-section">
+                                <p:commandButton id="reportButton" icon="ui-icon-print"  value="#{crudbundle.Print}" update="msgs" actionListener="#{compraVentaVehiculosMB.click}"  oncomplete="print(xhr, status, args)" />                   
+                                <p:commandButton value="Cancelar" update="msgs"  icon="ui-icon-trash"    />
+                                <p:commandButton type="buton" value="Atras"  icon="ui-icon-check"  onclick="window.location.href = '#{facesContext.externalContext.requestContextPath}/views/index.xhtml'" />                      
+                            </div>
+                        </f:facet>
+                    </h:panelGrid>
+                </div>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+</ui:composition>
